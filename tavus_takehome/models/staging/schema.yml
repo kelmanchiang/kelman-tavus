@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: stg_conversation
+    description: "Staging model for conversation table with standardized column names"
+    config:
+      materialized: view
+    columns:
+      - name: conversation_id
+        description: "Primary key for conversation table"
+        tests:
+          - unique
+          - not_null
+      - name: conversation_uuid
+        description: "Unique identifier for conversation"
+        tests:
+          - unique
+
+  - name: stg_users
+    description: "Staging model for users table with standardized column names"
+    config:
+      materialized: view
+    columns:
+      - name: user_id
+        description: "Primary key for users table"
+        tests:
+          - unique
+          - not_null
+      - name: email
+        description: "User email address"
+        tests:
+          - unique
+          - not_null
+      - name: uuid
+        description: "Unique identifier for user"
+        tests:
+          - unique

@@ -1,0 +1,11 @@
+id,company_name,external_billing_account_id,seat_quantity,subscription_type,uuid,requires_consent,subscription_id,plan_id,status_updated_at,status,created_at,updated_at,is_internal,scheduled_cancellation_date,raw_recording_allowed
+1,Acme Corporation,ext_bill_001,50,enterprise,r123456789,true,sub_001,plan_enterprise,2024-01-15 10:30:00,active,2024-01-01 00:00:00,2024-01-15 10:30:00,false,,false
+2,TechStart Inc,ext_bill_002,10,professional,r234567890,true,sub_002,plan_pro,2024-01-16 14:20:00,active,2024-01-02 00:00:00,2024-01-16 14:20:00,false,,true
+3,Global Solutions Ltd,ext_bill_003,200,enterprise,r345678901,true,sub_003,plan_enterprise,2024-01-17 09:15:00,active,2024-01-03 00:00:00,2024-01-17 09:15:00,false,,false
+4,StartupXYZ,ext_bill_004,5,starter,r456789012,true,sub_004,plan_starter,2024-01-18 16:45:00,active,2024-01-04 00:00:00,2024-01-18 16:45:00,false,,false
+5,Enterprise Corp,ext_bill_005,500,enterprise,r567890123,true,sub_005,plan_enterprise,2024-01-19 11:30:00,active,2024-01-05 00:00:00,2024-01-19 11:30:00,false,,true
+6,Small Business Co,ext_bill_006,3,starter,r678901234,true,sub_006,plan_starter,2024-01-20 13:20:00,active,2024-01-06 00:00:00,2024-01-20 13:20:00,false,,false
+7,Innovation Labs,ext_bill_007,25,professional,r789012345,true,sub_007,plan_pro,2024-01-21 08:45:00,active,2024-01-07 00:00:00,2024-01-21 08:45:00,false,,true
+8,MegaCorp Industries,ext_bill_008,1000,enterprise,r890123456,true,sub_008,plan_enterprise,2024-01-22 15:10:00,active,2024-01-08 00:00:00,2024-01-22 15:10:00,false,,false
+9,Freelancer Pro,ext_bill_009,1,starter,r901234567,true,sub_009,plan_starter,2024-01-23 12:00:00,active,2024-01-09 00:00:00,2024-01-23 12:00:00,false,,false
+0,Consulting Group,ext_bill_010,15,professional,r012345678,true,sub_010,plan_pro,2024-01-24 10:30:00,active,2024-01-10 00:00:00,2024-01-24 10:30:00,false,,true

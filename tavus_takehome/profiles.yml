@@ -1,0 +1,7 @@
+tavus_takehome:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: 'tavus_database.duckdb'
+      threads: 1
