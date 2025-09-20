@@ -19,7 +19,11 @@ weekly_active_users as (
     select 
         conversation_week as week_key,
         count(distinct user_id) as weekly_active_users,
-        count(distinct case when total_conversation_length_minutes >= 1 then user_id end) as weekly_engaged_users
+        sum(conversation_count) as weekly_conversation_count,
+        count(distinct case when total_conversation_length_minutes >= 1 then user_id end) as weekly_engaged_users,
+        sum(total_conversation_length_minutes) as weekly_total_conversation_length_minutes,
+        weekly_total_conversation_length_minutes / weekly_active_users as weekly_average_conversation_length_minutes,
+        weekly_conversation_count / weekly_active_users as weekly_conversation_count_per_user
     from weekly_conversations
     group by 1
 ),
@@ -29,7 +33,10 @@ final as (
     select 
         ds.week_key as week_start_date,
         coalesce(wau.weekly_active_users, 0) as weekly_active_users,
-        coalesce(wau.weekly_engaged_users, 0) as weekly_engaged_users
+        coalesce(wau.weekly_engaged_users, 0) as weekly_engaged_users,
+        coalesce(wau.weekly_total_conversation_length_minutes, 0) as weekly_total_conversation_length_minutes,
+        coalesce(wau.weekly_average_conversation_length_minutes, 0) as weekly_average_conversation_length_minutes,
+        coalesce(wau.weekly_conversation_count_per_user, 0) as weekly_conversation_count_per_user
     from (select distinct date_trunc('week', created_at) as week_key from {{ ref('stg_conversation') }}) ds
     left join weekly_active_users wau
         on ds.week_key = wau.week_key

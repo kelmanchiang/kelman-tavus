@@ -31,16 +31,24 @@ with accounts as (
         sum(case when date_diff('day', c.created_at, current_date()) <= 30 then conversation_length_minutes end) as conversation_length_minutes_30d,
         count(distinct case when date_diff('day', c.created_at, current_date()) <= 30 and conversation_length_minutes >= 1 then conversation_uuid end) as engaged_conversation_count_30d,
         sum(case when date_diff('day', c.created_at, current_date()) <= 30 and conversation_length_minutes >= 1 then conversation_length_minutes end) as engaged_conversation_length_minutes_30d,
+        count(distinct case when date_diff('day', c.created_at, current_date()) <= 30 then c.owner_id end) as user_count_30d,
+        conversation_length_minutes_30d / user_count_30d as average_conversation_length_minutes_30d,
 
         count(distinct case when date_diff('day', c.created_at, current_date()) <= 60 then conversation_uuid end) as conversation_count_60d,
         sum(case when date_diff('day', c.created_at, current_date()) <= 60 then conversation_length_minutes end) as conversation_length_minutes_60d,
         count(distinct case when date_diff('day', c.created_at, current_date()) <= 60 and conversation_length_minutes >= 1 then conversation_uuid end) as engaged_conversation_count_60d,
         sum(case when date_diff('day', c.created_at, current_date()) <= 60 and conversation_length_minutes >= 1 then conversation_length_minutes end) as engaged_conversation_length_minutes_60d,
+        count(distinct case when date_diff('day', c.created_at, current_date()) <= 60 then c.owner_id end) as user_count_60d,
+        conversation_length_minutes_60d / user_count_60d as average_conversation_length_minutes_60d,
+
 
         count(distinct case when date_diff('day', c.created_at, current_date()) <= 90 then conversation_uuid end) as conversation_count_90d,
         sum(case when date_diff('day', c.created_at, current_date()) <= 90 then conversation_length_minutes end) as conversation_length_minutes_90d,
         count(distinct case when date_diff('day', c.created_at, current_date()) <= 90 and conversation_length_minutes >= 1 then conversation_uuid end) as engaged_conversation_count_90d,
-        sum(case when date_diff('day', c.created_at, current_date()) <= 90 and conversation_length_minutes >= 1 then conversation_length_minutes end) as engaged_conversation_length_minutes_90d
+        sum(case when date_diff('day', c.created_at, current_date()) <= 90 and conversation_length_minutes >= 1 then conversation_length_minutes end) as engaged_conversation_length_minutes_90d,
+        count(distinct case when date_diff('day', c.created_at, current_date()) <= 90 then c.owner_id end) as user_count_90d,
+        conversation_length_minutes_90d / user_count_90d as average_conversation_length_minutes_90d,
+
     from {{ ref('stg_conversation') }} c
     left join {{ ref('stg_users') }} u
         on u.user_id = c.owner_id
@@ -60,16 +68,20 @@ select
     coalesce(uc.conversation_length_minutes_30d, 0) as conversation_length_minutes_30d,
     coalesce(uc.engaged_conversation_count_30d, 0) as engaged_conversation_count_30d,
     coalesce(uc.engaged_conversation_length_minutes_30d, 0) as engaged_conversation_length_minutes_30d,
+    coalesce(uc.average_conversation_length_minutes_30d, 0) as average_conversation_length_minutes_30d,
 
     coalesce(uc.conversation_count_60d, 0) as conversation_count_60d,
     coalesce(uc.conversation_length_minutes_60d, 0) as conversation_length_minutes_60d,
     coalesce(uc.engaged_conversation_count_60d, 0) as engaged_conversation_count_60d,
     coalesce(uc.engaged_conversation_length_minutes_60d, 0) as engaged_conversation_length_minutes_60d,
-    
+    coalesce(uc.average_conversation_length_minutes_60d, 0) as average_conversation_length_minutes_60d,
+
     coalesce(uc.conversation_count_90d, 0) as conversation_count_90d,
     coalesce(uc.conversation_length_minutes_90d, 0) as conversation_length_minutes_90d,
     coalesce(uc.engaged_conversation_count_90d, 0) as engaged_conversation_count_90d,
-    coalesce(uc.engaged_conversation_length_minutes_90d, 0) as engaged_conversation_length_minutes_90d
+    coalesce(uc.engaged_conversation_length_minutes_90d, 0) as engaged_conversation_length_minutes_90d,
+    coalesce(uc.average_conversation_length_minutes_90d, 0) as average_conversation_length_minutes_90d,
+    
 from accounts a
 left join users_by_account u
     on a.billing_account_id = u.billing_account_id

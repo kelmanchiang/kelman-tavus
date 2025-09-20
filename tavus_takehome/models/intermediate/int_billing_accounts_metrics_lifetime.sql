@@ -27,7 +27,8 @@ with accounts as (
         count(distinct conversation_uuid) as total_conversation_count,
         sum(conversation_length_minutes) as total_conversation_length_minutes,
         count(distinct case when conversation_length_minutes >= 1 then conversation_uuid end) as engaged_conversation_count,
-        sum(case when conversation_length_minutes >= 1 then conversation_length_minutes end) as engaged_conversation_length_minutes
+        sum(case when conversation_length_minutes >= 1 then conversation_length_minutes end) as engaged_conversation_length_minutes,
+
     from {{ ref('stg_conversation') }} c
     left join {{ ref('stg_users') }} u
         on u.user_id = c.owner_id
@@ -46,7 +47,11 @@ select
     coalesce(uc.total_conversation_count, 0) as total_conversation_count,
     coalesce(uc.total_conversation_length_minutes, 0) as total_conversation_length_minutes,
     coalesce(uc.engaged_conversation_count, 0) as engaged_conversation_count,
-    coalesce(uc.engaged_conversation_length_minutes, 0) as engaged_conversation_length_minutes
+    coalesce(uc.engaged_conversation_length_minutes, 0) as engaged_conversation_length_minutes,
+    case 
+        when u.total_user_count is null or u.total_user_count = 0 then 0
+        else coalesce(uc.total_conversation_length_minutes, 0) / u.total_user_count
+    end as average_conversation_length_minutes
 from accounts a
 left join users_by_account u
     on a.billing_account_id = u.billing_account_id

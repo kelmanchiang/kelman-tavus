@@ -11,7 +11,8 @@ with lifetime_metrics as (
         total_conversation_length_minutes,
         engaged_conversation_count,
         engaged_conversation_length_minutes,
-        total_user_count / seat_quantity as seat_utilization_percentage
+        total_user_count / seat_quantity as seat_utilization_percentage,
+        average_conversation_length_minutes
     from {{ ref('int_billing_accounts_metrics_lifetime') }}
 )
 
@@ -27,14 +28,19 @@ with lifetime_metrics as (
         conversation_length_minutes_30d,
         engaged_conversation_count_30d,
         engaged_conversation_length_minutes_30d,
+        average_conversation_length_minutes_30d,
+
         conversation_count_60d,
         conversation_length_minutes_60d,
         engaged_conversation_count_60d,
         engaged_conversation_length_minutes_60d,
+        average_conversation_length_minutes_60d,
+
         conversation_count_90d,
         conversation_length_minutes_90d,
         engaged_conversation_count_90d,
-        engaged_conversation_length_minutes_90d
+        engaged_conversation_length_minutes_90d,
+        average_conversation_length_minutes_90d
     from {{ ref('int_billing_accounts_metrics_L30_60_90D') }}
 )
 
